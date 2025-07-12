@@ -81,10 +81,13 @@ DATABASES = {
         'USER': 'db_facturacion',
         'PASSWORD': '123456',
         'HOST': '127.0.0.1',
-        'PORT': '5432'
- 
+        'PORT': '5432',
+        'OPTIONS': {
+            'client_encoding': 'UTF8',
+        },
     }
 }
+
 
 
 # Password validation
