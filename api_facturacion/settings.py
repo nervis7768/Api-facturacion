@@ -56,7 +56,7 @@ ROOT_URLCONF = 'api_facturacion.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # ← AGREGADO: Carpeta templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,10 +81,13 @@ DATABASES = {
         'USER': 'db_facturacion',
         'PASSWORD': '123456',
         'HOST': '127.0.0.1',
-        'PORT': '5432'
- 
+        'PORT': '5432',
+        'OPTIONS': {
+            'client_encoding': 'UTF8',
+        },
     }
 }
+
 
 
 # Password validation

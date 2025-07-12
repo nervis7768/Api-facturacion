@@ -7,7 +7,7 @@ class FacturaVentaSerializer(serializers.Serializer):
     serie = serializers.CharField()
     numero = serializers.CharField()
     fecha_emision = serializers.DateField()
-    hora_emision = serializers.TimeField()
+    hora_emision = serializers.TimeField(required=False, allow_null=True)  # ← CAMBIADO: Ahora es opcional
     fecha_vencimiento = serializers.DateField(required=False, allow_null=True)
     moneda_id = serializers.ChoiceField(choices=["1", "2"])  # PEN, USD
     forma_pago_id = serializers.ChoiceField(choices=["1", "2"])  # contado, crédito
