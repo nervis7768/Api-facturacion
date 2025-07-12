@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API Facturación Electrónica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center mb-4">🧾 Test API Facturación Electrónica</h1>
+                
+                <!-- Tabs -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="factura-tab" data-bs-toggle="tab" data-bs-target="#factura" type="button" role="tab">
+                            📄 Emitir Factura
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="boleta-tab" data-bs-toggle="tab" data-bs-target="#boleta" type="button" role="tab">
+                            🧾 Emitir Boleta
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="nota-tab" data-bs-toggle="tab" data-bs-target="#nota" type="button" role="tab">
+                            📝 Nota de Crédito
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content mt-4" id="myTabContent">
+                    <!-- FACTURA -->
+                    <div class="tab-pane fade show active" id="factura" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>📄 Emitir Factura Electrónica</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="facturaForm">
+                                    <div class="row">
+                                        <!-- Datos de Empresa -->
+                                        <div class="col-md-6">
+                                            <h6 class="text-primary">🏢 Datos de la Empresa</h6>
+                                            <div class="mb-3">
+                                                <label class="form-label">RUC</label>
+                                                <input type="text" class="form-control" name="empresa.ruc" value="20103129061" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Razón Social</label>
+                                                <input type="text" class="form-control" name="empresa.razon_social" value="FACTURACION ELECTRONICA MONSTRUO E.I.R.L." required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Nombre Comercial</label>
+                                                <input type="text" class="form-control" name="empresa.nombre_comercial" value="FACTURACION INTEGRAL" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Domicilio Fiscal</label>
+                                                <input type="text" class="form-control" name="empresa.domicilio_fiscal" value="AV. PRINCIPAL 123" required>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Ubigeo</label>
+                                                        <input type="text" class="form-control" name="empresa.ubigeo" value="140101" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Modo</label>
+                                                        <select class="form-select" name="empresa.modo" required>
+                                                            <option value="0" selected>Pruebas</option>
+                                                            <option value="1">Producción</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Usuario SUNAT</label>
+                                                <input type="text" class="form-control" name="empresa.usu_secundario_produccion_user" value="MODDATOS" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Password SUNAT</label>
+                                                <input type="password" class="form-control" name="empresa.usu_secundario_produccion_password" value="MODDATOS" required>
+                                            </div>
+                                        </div>
+
+                                        <!-- Datos del Cliente -->
+                                        <div class="col-md-6">
+                                            <h6 class="text-success">👤 Datos del Cliente</h6>
+                                            <div class="mb-3">
+                                                <label class="form-label">Razón Social / Nombres</label>
+                                                <input type="text" class="form-control" name="cliente.razon_social_nombres" value="Hector De La Cruz" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Número de Documento</label>
+                                                <input type="text" class="form-control" name="cliente.numero_documento" value="10407086274" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Tipo de Entidad</label>
+                                                <select class="form-select" name="cliente.codigo_tipo_entidad" required>
+                                                    <option value="1">DNI</option>
+                                                    <option value="6" selected>RUC</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Dirección</label>
+                                                <input type="text" class="form-control" name="cliente.cliente_direccion" value="AV. CLIENTE 456" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Datos de Venta -->
+                                    <hr>
+                                    <h6 class="text-warning">💰 Datos de la Venta</h6>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label">Serie</label>
+                                                <input type="text" class="form-control" name="venta.serie" value="FF03" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label">Número</label>
+                                                <input type="text" class="form-control" name="venta.numero" value="53953" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label">Fecha Emisión</label>
+                                                <input type="date" class="form-control" name="venta.fecha_emision" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label">Hora Emisión</label>
+                                                <input type="text" class="form-control" value="Se generará automáticamente" disabled>
+                                                <small class="text-muted">La hora se toma automáticamente del servidor</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label">Moneda</label>
+                                                <select class="form-select" name="venta.moneda_id" required>
+                                                    <option value="1" selected>PEN</option>
+                                                    <option value="2">USD</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label">Forma de Pago</label>
+                                                <select class="form-select" name="venta.forma_pago_id" required>
+                                                    <option value="1" selected>Contado</option>
+                                                    <option value="2">Crédito</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label">Total Gravada</label>
+                                                <input type="number" class="form-control" name="venta.total_gravada" value="500.00" step="0.01" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label">Total IGV</label>
+                                                <input type="number" class="form-control" name="venta.total_igv" value="90.00" step="0.01" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Items -->
+                                    <hr>
+                                    <h6 class="text-info">📦 Items</h6>
+                                    <div id="itemsContainer">
+                                        <div class="item-row border p-3 mb-3 rounded">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Producto</label>
+                                                    <input type="text" class="form-control" name="items[0].producto" value="Producto de Prueba 1" required>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="form-label">Cantidad</label>
+                                                    <input type="number" class="form-control" name="items[0].cantidad" value="1.00" step="0.01" required>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="form-label">Precio Base</label>
+                                                    <input type="number" class="form-control" name="items[0].precio_base" value="100.00" step="0.01" required>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="form-label">Código SUNAT</label>
+                                                    <input type="text" class="form-control" name="items[0].codigo_sunat" value="">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="form-label">Código Producto</label>
+                                                    <input type="text" class="form-control" name="items[0].codigo_producto" value="PROD001" required>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <label class="form-label">Unidad</label>
+                                                    <input type="text" class="form-control" name="items[0].codigo_unidad" value="ZZ" required>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-md-2">
+                                                    <label class="form-label">Tipo IGV</label>
+                                                    <input type="text" class="form-control" name="items[0].tipo_igv_codigo" value="10" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addItem()">➕ Agregar Item</button>
+
+                                    <hr>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary btn-lg">🚀 Emitir Factura</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BOLETA -->
+                    <div class="tab-pane fade" id="boleta" role="tabpanel">
+                        <div class="alert alert-info">
+                            <h5>🧾 Boleta de Venta</h5>
+                            <p>Similar a la factura pero con tipo_documento_codigo = "03"</p>
+                            <p class="mb-0">Puedes usar el mismo formulario de factura cambiando el tipo de documento.</p>
+                        </div>
+                    </div>
+
+                    <!-- NOTA DE CREDITO -->
+                    <div class="tab-pane fade" id="nota" role="tabpanel">
+                        <div class="alert alert-warning">
+                            <h5>📝 Nota de Crédito</h5>
+                            <p>Para implementar notas de crédito se requiere:</p>
+                            <ul>
+                                <li>tipo_documento_codigo = "07" (Nota de Crédito) o "08" (Nota de Débito)</li>
+                                <li>documento_afectado: Documento que se está modificando</li>
+                                <li>tipo_nota y motivo_nota: Razón de la nota</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resultados -->
+                <div class="mt-4">
+                    <h5>📊 Resultado de la API</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="loading" class="text-center" style="display: none;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                                <p class="mt-2">Procesando con SUNAT...</p>
+                            </div>
+                            <pre id="resultado" class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">
+Aquí se mostrará la respuesta de la API...
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let itemIndex = 1;
+
+        function addItem() {
+            const container = document.getElementById('itemsContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'item-row border p-3 mb-3 rounded';
+            newItem.innerHTML = `
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="items[${itemIndex}].producto" value="Producto ${itemIndex + 1}" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Cantidad</label>
+                        <input type="number" class="form-control" name="items[${itemIndex}].cantidad" value="1.00" step="0.01" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Precio Base</label>
+                        <input type="number" class="form-control" name="items[${itemIndex}].precio_base" value="200.00" step="0.01" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Código SUNAT</label>
+                        <input type="text" class="form-control" name="items[${itemIndex}].codigo_sunat" value="">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Código Producto</label>
+                        <input type="text" class="form-control" name="items[${itemIndex}].codigo_producto" value="PROD${itemIndex + 1}" required>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label">Unidad</label>
+                        <input type="text" class="form-control" name="items[${itemIndex}].codigo_unidad" value="NIU" required>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-2">
+                        <label class="form-label">Tipo IGV</label>
+                        <input type="text" class="form-control" name="items[${itemIndex}].tipo_igv_codigo" value="10" required>
+                    </div>
+                    <div class="col-md-10 d-flex align-items-end">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">🗑️ Eliminar</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newItem);
+            itemIndex++;
+        }
+
+        function removeItem(button) {
+            button.closest('.item-row').remove();
+        }
+
+        function formToObject(form) {
+            const formData = new FormData(form);
+            const obj = {};
+            
+            for (let [key, value] of formData.entries()) {
+                const keys = key.split(/[\[\]\.]+/).filter(k => k !== '');
+                let current = obj;
+                
+                for (let i = 0; i < keys.length - 1; i++) {
+                    const k = keys[i];
+                    if (!current[k]) {
+                        current[k] = isNaN(keys[i + 1]) ? {} : [];
+                    }
+                    current = current[k];
+                }
+                
+                const lastKey = keys[keys.length - 1];
+                if (Array.isArray(current)) {
+                    if (!current[lastKey]) current[lastKey] = {};
+                    const itemKeys = key.split(/[\[\]\.]+/).filter(k => k !== '');
+                    if (itemKeys[0] === 'items') {
+                        const itemIndex = parseInt(itemKeys[1]);
+                        const itemProperty = itemKeys[2];
+                        if (!current[itemIndex]) current[itemIndex] = {};
+                        current[itemIndex][itemProperty] = value;
+                    }
+                } else {
+                    current[lastKey] = value;
+                }
+            }
+            
+            return obj;
+        }
+
+        document.getElementById('facturaForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const loadingDiv = document.getElementById('loading');
+            const resultadoDiv = document.getElementById('resultado');
+            
+            loadingDiv.style.display = 'block';
+            resultadoDiv.textContent = 'Enviando solicitud...';
+            
+            try {
+                const formObj = formToObject(this);
+                
+                // Convertir items object a array
+                if (formObj.items && typeof formObj.items === 'object') {
+                    formObj.items = Object.values(formObj.items);
+                }
+                
+                // Agregar campos fijos para factura
+                formObj.venta.tipo_documento_codigo = "01";
+                formObj.venta.tipo_operacion = "0101";
+                formObj.empresa.urbanizacion = "URBANIZACION";
+                formObj.empresa.distrito = "DISTRITO";
+                formObj.empresa.provincia = "PROVINCIA";
+                formObj.empresa.departamento = "DEPARTAMENTO";
+                
+                console.log('Datos a enviar:', formObj);
+                
+                const response = await fetch('/api/emitir/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(formObj)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    if (result.data && result.data.modo === "SIMULACION") {
+                        resultadoDiv.innerHTML = `<span class="text-warning">⚠️ MODO SIMULACIÓN:</span>\n${JSON.stringify(result, null, 2)}`;
+                    } else {
+                        resultadoDiv.innerHTML = `<span class="text-success">✅ ÉXITO:</span>\n${JSON.stringify(result, null, 2)}`;
+                    }
+                } else {
+                    resultadoDiv.innerHTML = `<span class="text-danger">❌ ERROR:</span>\n${JSON.stringify(result, null, 2)}`;
+                }
+                
+            } catch (error) {
+                resultadoDiv.innerHTML = `<span class="text-danger">❌ ERROR DE CONEXIÓN:</span>\n${error.message}`;
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+        });
+
+        // Función para obtener CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Auto-generar fecha y número de comprobante
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fecha actual
+            const fechaInput = document.querySelector('input[name="venta.fecha_emision"]');
+            if (fechaInput) {
+                const today = new Date().toISOString().split('T')[0];
+                fechaInput.value = today;
+            }
+            
+            // Número correlativo basado en timestamp
+            const numeroInput = document.querySelector('input[name="venta.numero"]');
+            if (numeroInput) {
+                const timestamp = Date.now().toString().slice(-5);
+                numeroInput.value = timestamp;
+            }
+        });
+    </script>
+</body>
+</html>

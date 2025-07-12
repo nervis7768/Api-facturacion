@@ -56,7 +56,7 @@ ROOT_URLCONF = 'api_facturacion.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # ← AGREGADO: Carpeta templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

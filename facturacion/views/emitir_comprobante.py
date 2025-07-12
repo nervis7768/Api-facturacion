@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 import os
 import base64
+from datetime import datetime, time  # ← AGREGADO: Importar datetime y time
 
 from facturacion.serializers.factura import FacturaSerializer as ComprobanteSerializer
 from facturacion.services.generador_xml import generar_xml_factura
@@ -18,6 +19,12 @@ class EmitirComprobanteView(APIView):
             datos = serializer.validated_data
             venta = datos['venta']
             empresa = datos['empresa']
+
+            # ← AGREGADO: Generar hora automáticamente si no viene en la petición
+            if not venta.get('hora_emision'):
+                ahora = datetime.now()
+                venta['hora_emision'] = time(ahora.hour, ahora.minute, ahora.second)
+                print(f"🕐 Hora generada automáticamente: {venta['hora_emision']}")
 
             nombre_archivo = generar_nombre_archivo(
                 empresa['ruc'],
@@ -51,10 +58,12 @@ class EmitirComprobanteView(APIView):
             )
 
             if 'error' in response:
+                error_info = response['error']
                 return Response({
                     "error": {
-                        "codigo": response['error'].get("codigo", "sin código"),
-                        "mensaje": response['error'].get("mensaje", "Error desconocido desde SUNAT")
+                        "codigo": error_info.get("codigo", "ERROR_DESCONOCIDO"),
+                        "mensaje": error_info.get("mensaje", "Error desconocido desde SUNAT"),
+                        "tipo": error_info.get("tipo", "Unknown")
                     }
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -75,7 +84,8 @@ class EmitirComprobanteView(APIView):
                     "ruta_pdf": f"http://localhost:8000/{ruta_pdf.replace(os.sep, '/')}",
                     "codigo_hash": "hash-simulacion",
                     "xml_base_64": codificar_a_base64(xml_firmado),
-                    "cdr_base_64": response["cdr_base64"]
+                    "cdr_base_64": response["cdr_base64"],
+                    "hora_emision": str(venta['hora_emision'])  # ← AGREGADO: Mostrar la hora generada
                 }
             }, status=status.HTTP_200_OK)
 

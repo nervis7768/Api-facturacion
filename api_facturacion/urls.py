@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
+from facturacion.views import index  # ← AGREGADO: Importar vista index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
-     path('api/', include('facturacion.urls')),
-]+ static('/files/', document_root='files/')
+    path('api/', include('facturacion.urls')),
+    path('', index, name='index'),  # ← AGREGADO: Ruta principal para el frontend
+] + static('/files/', document_root='files/')
