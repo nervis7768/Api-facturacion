@@ -27,4 +27,50 @@ class BaseItemSerializer(serializers.Serializer):
     codigo_sunat = serializers.CharField(required=False, allow_blank=True)
     codigo_producto = serializers.CharField()
     codigo_unidad = serializers.CharField()
-    tipo_igv_codigo = serializers.CharField()
+    
+    # NUEVOS CAMPOS PARA MANEJAR DIFERENTES TIPOS DE OPERACIÓN
+    tipo_operacion = serializers.ChoiceField(
+        choices=[
+            ("01", "Venta gravada"),
+            ("02", "Venta exonerada"),
+            ("03", "Venta inafecta"),
+            ("04", "Exportación"),
+            ("05", "Percepción"),
+            ("06", "Bonificación"),
+            ("07", "Transferencia gratuita")
+        ],
+        default="01"
+    )
+    
+    # Código de afectación al IGV (Catálogo 7 SUNAT)
+    codigo_afectacion_igv = serializers.ChoiceField(
+        choices=[
+            ("10", "Gravado - Operación Onerosa"),
+            ("11", "Gravado - Retiro por premio"),
+            ("12", "Gravado - Retiro por publicidad"),
+            ("13", "Gravado - Bonificaciones"),
+            ("20", "Exonerado - Operación Onerosa"),
+            ("21", "Exonerado - Transferencia gratuita"),
+            ("30", "Inafecto - Operación Onerosa"),
+            ("31", "Inafecto - Retiro por Bonificación"),
+            ("32", "Inafecto - Retiro"),
+            ("40", "Exportación")
+        ],
+        default="10"
+    )
+    
+    # Para transferencias gratuitas
+    valor_referencial = serializers.DecimalField(
+        max_digits=10, decimal_places=2, 
+        required=False, 
+        allow_null=True,
+        help_text="Valor de mercado para transferencias gratuitas"
+    )
+    
+    # Para bonificaciones
+    es_bonificacion = serializers.BooleanField(default=False)
+    item_relacionado = serializers.IntegerField(
+        required=False, 
+        allow_null=True,
+        help_text="Índice del item al que está relacionada esta bonificación"
+    )

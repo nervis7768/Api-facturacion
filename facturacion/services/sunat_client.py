@@ -169,3 +169,4 @@ def enviar_xml_a_sunat_real(ruc, usuario, password, tipo_doc, serie, correlativo
                 "mensaje": str(e)
             }
         }
+    
